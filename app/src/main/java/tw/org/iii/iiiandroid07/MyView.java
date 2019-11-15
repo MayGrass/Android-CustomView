@@ -75,6 +75,11 @@ public class MyView extends View {
         canvas.drawLine(0,0,200,200, paint);
     }
 
+    public void clear() {
+        lines.clear();
+        invalidate();
+    }
+
     private class Point {
         float x, y;
         Point(float x, float y) {
