@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import java.util.LinkedList;
 
 public class MyView extends View {
-    private LinkedList<LinkedList<Point>> lines; //存放point的line //存放很多線
+    private LinkedList<LinkedList<Point>> lines, recycler; //存放point的line //存放很多線
 
     //有AttributeSet才可載入XML的設定
     public MyView(Context context, @Nullable AttributeSet attrs) {
@@ -22,6 +22,7 @@ public class MyView extends View {
         setBackgroundColor(Color.BLUE);
 
         lines = new LinkedList<>();
+        recycler = new LinkedList<>();
 
         //點下去放開才觸發一次
         setOnClickListener(new OnClickListener() {
@@ -41,6 +42,7 @@ public class MyView extends View {
         //按下去開始畫新線
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Log.v("DCH", "Down");
+            recycler.clear();
             LinkedList<Point> line = new LinkedList<>();
             lines.add(line);
         }
@@ -81,8 +83,17 @@ public class MyView extends View {
     }
 
     public void undo() {
-        lines.removeLast();
-        invalidate();
+        if (lines.size() > 0) {
+            recycler.add(lines.removeLast());
+            invalidate();
+        }
+    }
+
+    public void redo() {
+        if (recycler.size() > 0) {
+            lines.add(recycler.removeLast());
+            invalidate();
+        }
     }
 
     private class Point {
