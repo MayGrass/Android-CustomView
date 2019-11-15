@@ -18,4 +18,8 @@ public class MainActivity extends AppCompatActivity {
     public void clearMyView(View view) {
         myView.clear();
     }
+
+    public void undo(View view) {
+        myView.undo();
+    }
 }
